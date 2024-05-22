@@ -98,6 +98,7 @@ class AccountApproved extends Notification
 - `web()`: Sets the platform value to web.
 - `link()`: Accepts a string value which will lead to URI specified on notification click.
 - `title('')`: Accepts a string value for the title.
+- `subtitle('')`: Accepts a string value for the subtitle (iOS).
 - `body('')`: Accepts a string value for the body.
 - `sound('')`: Accepts a string value for the notification sound file. Notice that if you leave blank the default sound value will be `default`.
 - `meta([...])`: Accepts an array of custom data to be sent along with the push message. Works for both platforms. See more at [Pusher Beams - Adding metadata to a notification](https://pusher.com/docs/beams/guides/publishing-to-multiple-devices)

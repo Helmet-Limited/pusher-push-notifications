@@ -18,6 +18,11 @@ class PusherMessage
     protected string|null $title = null;
 
     /**
+     * The message subtitle (iOS only).
+     */
+    protected string|null $subtitle = null;
+
+    /**
      * The phone number the message should be sent from.
      */
     protected string $sound = 'default';
@@ -203,6 +208,19 @@ class PusherMessage
     }
 
     /**
+     * Set the message subtitle (iOS only).
+     *
+     * @param  string  $value
+     * @return $this
+     */
+    public function subtitle(string $value): self
+    {
+        $this->subtitle = $value;
+
+        return $this;
+    }
+
+    /**
      * Set the message body.
      *
      * @param  string  $value
@@ -327,6 +345,10 @@ class PusherMessage
             ],
         ];
 
+        if ($this->subtitle) {
+            $message['apns']['aps']['alert']['subtitle'] = $this->subtitle;
+        }
+        
         if ($this->meta && count($this->meta)) {
             $message['apns']['data'] = $this->meta;
         }
