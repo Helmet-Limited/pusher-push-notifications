@@ -25,9 +25,9 @@ class PusherChannel
      *
      * @param  mixed  $notifiable
      * @param  Notification  $notification
-     * @return void
+     * @return mixed
      */
-    public function send($notifiable, Notification $notification): void
+    public function send($notifiable, Notification $notification): mixed
     {
         $type = $notifiable->pushNotificationType ?? self::INTERESTS;
 
@@ -37,7 +37,7 @@ class PusherChannel
         try {
             $notificationType = sprintf('publishTo%s', Str::ucfirst($type));
 
-            $this->beamsClient->{$notificationType}(
+            return $this->beamsClient->{$notificationType}(
                 Arr::wrap($data),
                 $notification->toPushNotification($notifiable)->toArray()
             );
