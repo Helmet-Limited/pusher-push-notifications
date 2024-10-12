@@ -15,8 +15,19 @@ use Pusher\PushNotifications\PushNotifications;
 
 class ChannelTest extends MockeryTestCase
 {
+    private $pusher;
+    private $events;
+    private $channel;
+    private $notification;
+    private $notifiableInterest;
+    private $notifiableInterests;
+    private $notifiableUser;
+    private $notifiableUsers;
+    
     public function setUp(): void
     {
+        parent::setUp();
+
         $this->pusher = Mockery::mock(PushNotifications::class);
 
         $this->events = Mockery::mock(Dispatcher::class);
@@ -39,9 +50,11 @@ class ChannelTest extends MockeryTestCase
 
         $data = $message->toArray();
 
-        $this->pusher->shouldReceive('publishToInterests')->once()->with(['interest_name'], $data);
+        $this->pusher->shouldReceive('publishToInterests')->once()->with(['interest_name'], $data)->andReturn(['publishId' => 'some-id']);
 
-        $this->channel->send($this->notifiableInterest, $this->notification);
+        $response = $this->channel->send($this->notifiableInterest, $this->notification);
+
+        $this->assertArrayHasKey('publishId', $response);
     }
 
     /** @test */
@@ -53,9 +66,11 @@ class ChannelTest extends MockeryTestCase
 
         $this->pusher->shouldReceive('publishToInterests')->once()->with([
             'interest_one', 'interest_two', 'interest_three',
-        ], $data);
+        ], $data)->andReturn(['publishId' => 'some-id']);
 
-        $this->channel->send($this->notifiableInterests, $this->notification);
+        $response = $this->channel->send($this->notifiableInterests, $this->notification);
+
+        $this->assertArrayHasKey('publishId', $response);
     }
 
     /** @test */
@@ -79,9 +94,11 @@ class ChannelTest extends MockeryTestCase
 
         $data = $message->toArray();
 
-        $this->pusher->shouldReceive('publishToUsers')->once()->with(['user_1'], $data);
+        $this->pusher->shouldReceive('publishToUsers')->once()->with(['user_1'], $data)->andReturn(['publishId' => 'some-id']);
 
-        $this->channel->send($this->notifiableUser, $this->notification);
+        $response = $this->channel->send($this->notifiableUser, $this->notification);
+
+        $this->assertArrayHasKey('publishId', $response);
     }
 
     /** @test */
@@ -93,9 +110,11 @@ class ChannelTest extends MockeryTestCase
 
         $this->pusher->shouldReceive('publishToUsers')->once()->with([
             'user_1', 'user_2', 'user_3',
-        ], $data);
+        ], $data)->andReturn(['publishId' => 'some-id']);
 
-        $this->channel->send($this->notifiableUsers, $this->notification);
+        $response = $this->channel->send($this->notifiableUsers, $this->notification);
+
+        $this->assertArrayHasKey('publishId', $response);
     }
 
     /** @test */

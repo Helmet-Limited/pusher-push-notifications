@@ -45,6 +45,7 @@ class PusherChannel
             $this->events->dispatch(
                 new NotificationFailed($notifiable, $notification, 'pusher-push-notifications', ['exception' => $exception])
             );
+            return null;
         }
     }
 
